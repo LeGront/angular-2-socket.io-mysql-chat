@@ -9,7 +9,6 @@ console.log('Сервер стартовал');
 io.on("connection", function (socket) {
     console.log("Client connected");
     var users = immutable_1.List();
-    var currentRoom;
     socket.on('setNickname', function (nickname) {
         users = users.push({
             id: socket.id,
