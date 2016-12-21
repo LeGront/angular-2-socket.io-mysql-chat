@@ -42,7 +42,8 @@ io.on("connection", (socket: any) => {
             nickname: user.nickname,
             currentRoom: room
         });
-
+        let rooms: number[] = io.sockets.adapter.sids[socket.id];
+        for(let room in rooms) { socket.leave(room); }
         console.log('user', getUser());
         socket.join('room' + getCurrentRoom());
 

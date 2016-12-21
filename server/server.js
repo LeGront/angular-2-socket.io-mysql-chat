@@ -32,6 +32,10 @@ io.on("connection", function (socket) {
             nickname: user.nickname,
             currentRoom: room
         });
+        var rooms = io.sockets.adapter.sids[socket.id];
+        for (var room_1 in rooms) {
+            socket.leave(room_1);
+        }
         console.log('user', getUser());
         socket.join('room' + getCurrentRoom());
         setMessages(models_1.SendType.self);
@@ -65,3 +69,4 @@ io.on("connection", function (socket) {
         return user.currentRoom.id;
     }
 });
+//# sourceMappingURL=server.js.map
