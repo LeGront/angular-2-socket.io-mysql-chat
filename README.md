@@ -1,7 +1,7 @@
 # angular-2-socket.io-mysql-chat
 Angular 2 chat
 
-First you need create MySQL DataBase and configure in ./models/db.ts, then import dump from `./dump.sql`
+First you need create MySQL DataBase and configure in `./models/db.ts`, then import dump from `./dump.sql`
 
 Install Angular CLI
 `
