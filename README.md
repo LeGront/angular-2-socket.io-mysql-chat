@@ -17,7 +17,7 @@ npm i
 
 For start Angular 2 
 `
-ng server
+ng serve
 `
 
 For start Node
