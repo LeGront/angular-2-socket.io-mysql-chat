@@ -29,7 +29,7 @@ export class AppComponent {
         this.getRooms();
     }
 
-    setCurrentRoom(room) {
+    setCurrentRoom(room: IRoom) {
         this.currentRoom = room;
         this.title = 'Лучший чат: ' + this.currentRoom.name;
         this.socket.emit('joinRoom', this.currentRoom);

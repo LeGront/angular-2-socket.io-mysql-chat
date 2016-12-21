@@ -2,7 +2,7 @@
     Введите свое имя <input type="text" #nicknameForm (keyup.enter)="setNickname(nicknameForm.value)">
 </div>
 
-<div *ngIf="nickname || !nickname === ''">
+<div *ngIf="nickname && !nickname !== ''">
     <div class="left">
         <h2>Привет, {{nickname}}</h2>
         Выбери интересующую тебя тематику:
@@ -25,7 +25,7 @@
             </div>
 
             <div class="controls">
-                <input type="text" [(ngModel)]="message" (keyup.enter)="sendMessage(message)">
+                <input type="text" [(ngModel)]="message" (keyup.enter)="sendMessage()">
             </div>
         </div>
     </div>

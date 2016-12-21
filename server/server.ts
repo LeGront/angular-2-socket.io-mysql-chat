@@ -14,7 +14,6 @@ io.on("connection", (socket: any) => {
     console.log("Client connected");
 
     let users: List<any> = List();
-    let currentRoom: IRoom;
 
     socket.on('setNickname', (nickname: string) => {
         users = users.push({
