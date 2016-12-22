@@ -14,6 +14,7 @@ export class AppComponent {
     messages: IMessage[] = [];
     rooms: IRoom[];
     currentRoom: IRoom;
+    chatUsers: any[];
 
     private host: string = window.location.protocol + "//" + window.location.hostname + ":1337";
     socket: SocketIOClient.Socket;
@@ -27,6 +28,7 @@ export class AppComponent {
         this.nickname = nickname;
         this.socket.emit('setNickname', this.nickname);
         this.getRooms();
+        this.getUsers();
     }
 
     setCurrentRoom(room: IRoom) {
@@ -51,7 +53,6 @@ export class AppComponent {
     private getMessages() {
         this.socket.emit('getMessages');
         this.socket.on('setMessages', (messages: IMessage[]) => {
-            console.log('messages');
             this.messages = messages;
         });
     }
@@ -61,7 +62,13 @@ export class AppComponent {
         this.socket.on('setRooms', (rooms: IRoom[]) => {
             this.rooms = rooms;
         });
+    }
 
+    private getUsers(): void {
+        this.socket.emit('getUsers');
+        this.socket.on('setUsers', (users) => {
+            this.chatUsers = users;
+        })
     }
 }
 //    "start": "ng serve --host 0.0.0.0",

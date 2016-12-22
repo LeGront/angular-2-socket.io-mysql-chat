@@ -12,7 +12,7 @@ var Room = (function (_super) {
     }
     Object.defineProperty(Room.prototype, "tableName", {
         get: function () {
-            return 'chat_dialogs';
+            return 'rooms';
         },
         enumerable: true,
         configurable: true
@@ -27,7 +27,7 @@ var Message = (function (_super) {
     }
     Object.defineProperty(Message.prototype, "tableName", {
         get: function () {
-            return 'chat_messages';
+            return 'messages';
         },
         enumerable: true,
         configurable: true
@@ -35,6 +35,21 @@ var Message = (function (_super) {
     return Message;
 }(db_1.bookshelf.Model));
 exports.Message = Message;
+var User = (function (_super) {
+    __extends(User, _super);
+    function User() {
+        _super.apply(this, arguments);
+    }
+    Object.defineProperty(User.prototype, "tableName", {
+        get: function () {
+            return 'users';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return User;
+}(db_1.bookshelf.Model));
+exports.User = User;
 (function (SendType) {
     SendType[SendType["self"] = 0] = "self";
     SendType[SendType["room"] = 1] = "room";

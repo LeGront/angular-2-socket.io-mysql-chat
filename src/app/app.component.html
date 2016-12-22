@@ -8,7 +8,13 @@
         Выбери интересующую тебя тематику:
 
         <ul class="themes">
-            <li *ngFor="let room of rooms" (click)="setCurrentRoom(room)">{{room.name}}</li>
+            <li *ngFor="let room of rooms" (click)="setCurrentRoom(room)" [class.active]="room === currentRoom">{{room.name}}</li>
+        </ul>
+
+        Пользователи в чате:
+
+        <ul class="themes">
+            <li *ngFor="let user of chatUsers">{{user.nickname}}</li>
         </ul>
     </div>
     <div class="right">

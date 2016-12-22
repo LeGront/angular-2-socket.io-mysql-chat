@@ -5,10 +5,12 @@ var models_1 = require('../models/models');
 var server = http.createServer();
 var port = process.env.port || 1337;
 var io = require('socket.io').listen(port);
+var users = immutable_1.List();
 console.log('Сервер стартовал');
 io.on("connection", function (socket) {
     console.log("Client connected");
-    var users = immutable_1.List();
+    socket.on('disconnect', function () {
+    });
     socket.on('setNickname', function (nickname) {
         users = users.push({
             id: socket.id,
@@ -32,16 +34,15 @@ io.on("connection", function (socket) {
             nickname: user.nickname,
             currentRoom: room
         });
-        var rooms = io.sockets.adapter.sids[socket.id];
-        for (var room_1 in rooms) {
-            socket.leave(room_1);
-        }
-        console.log('user', getUser());
+        leaveRoom();
         socket.join('room' + getCurrentRoom());
         setMessages(models_1.SendType.self);
     });
     socket.on('getMessages', function () {
         setMessages(models_1.SendType.self);
+    });
+    socket.on('getUsers', function () {
+        io.emit('setUsers', users);
     });
     socket.on('sendMessage', function (message) {
         new models_1.Message(message).save().then(function (model) {
@@ -68,5 +69,10 @@ io.on("connection", function (socket) {
         var user = getUser();
         return user.currentRoom.id;
     }
+    function leaveRoom() {
+        var rooms = io.sockets.adapter.sids[socket.id];
+        for (var room in rooms) {
+            socket.leave(room);
+        }
+    }
 });
-//# sourceMappingURL=server.js.map

@@ -8,12 +8,16 @@ let server = http.createServer();
 let port = process.env.port || 1337;
 let io = require('socket.io').listen(port);
 
+let users: List<any> = List();
+
 console.log('Сервер стартовал');
 
 io.on("connection", (socket: any) => {
     console.log("Client connected");
 
-    let users: List<any> = List();
+    socket.on('disconnect', () => {
+
+    });
 
     socket.on('setNickname', (nickname: string) => {
         users = users.push({
@@ -42,16 +46,18 @@ io.on("connection", (socket: any) => {
             nickname: user.nickname,
             currentRoom: room
         });
-        let rooms: number[] = io.sockets.adapter.sids[socket.id];
-        for(let room in rooms) { socket.leave(room); }
-        console.log('user', getUser());
-        socket.join('room' + getCurrentRoom());
 
+        leaveRoom();
+        socket.join('room' + getCurrentRoom());
         setMessages(SendType.self);
     });
 
     socket.on('getMessages', () => {
         setMessages(SendType.self);
+    });
+
+    socket.on('getUsers', () => {
+        io.emit('setUsers', users);
     });
 
     socket.on('sendMessage', (message: IMessage) => {
@@ -82,6 +88,11 @@ io.on("connection", (socket: any) => {
     function getCurrentRoom() {
         let user = getUser();
         return user.currentRoom.id;
+    }
+
+    function leaveRoom() {
+        let rooms: number[] = io.sockets.adapter.sids[socket.id];
+        for(let room in rooms) { socket.leave(room); }
     }
 
 });
