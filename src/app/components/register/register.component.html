@@ -1,0 +1,12 @@
+<section class="container">
+    <div class="login">
+        <h1>Регистрация</h1>
+        <!--<form method="post" action="index.html">-->
+        <p><input type="text" [(ngModel)]="username" (keyup)='guideMessage(1)' placeholder="Логин или Email"></p>
+        <p><input type="password" [(ngModel)]="password" (keyup)='guideMessage(2)' placeholder="Пароль"></p>
+        <p><input type="password" [(ngModel)]="password2" (keyup)='guideMessage(3)' placeholder="Ещё раз пароль"></p>
+        <p>{{message}}</p>
+        <p class="submit"><input type="submit" (click)="alertMessage()" value="Зерегистрироваться"></p>
+        <!--</form>-->
+    </div>
+</section>
