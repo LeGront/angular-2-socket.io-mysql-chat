@@ -7,9 +7,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var core_1 = require('@angular/core');
 var RegisterComponent = (function () {
-    function RegisterComponent(router, userService, alertService) {
+    function RegisterComponent(router, userService, authService, alertService) {
         this.router = router;
         this.userService = userService;
+        this.authService = authService;
         this.alertService = alertService;
         this.model = {};
         this.loading = false;
@@ -17,10 +18,12 @@ var RegisterComponent = (function () {
     RegisterComponent.prototype.register = function () {
         var _this = this;
         this.loading = true;
-        this.userService.create(this.model)
+        this.authService.register(this.model.nickname, this.model.password)
             .subscribe(function (data) {
-            _this.alertService.success('Registration successful', true);
-            _this.router.navigate(['/login']);
+            if (data === _this.model.nickname) {
+                _this.alertService.success('Registration successful', true);
+                _this.router.navigate(['/login']);
+            }
         }, function (error) {
             _this.alertService.error(error);
             _this.loading = false;

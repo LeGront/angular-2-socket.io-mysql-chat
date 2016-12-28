@@ -15,30 +15,41 @@ export class AuthenticationService {
     }
 
     login(nickname: string, password: string) {
-        this.socket.emit('setNickname', nickname);
-        return Observable.create(observer => {
-            observer.next();
-            observer.complete();
+        this.socket.emit('auth user', nickname, password);
+        let observable = new Observable(observer => {
+            this.socket.on('auth result', (data) => {
+                observer.next(data);
+            });
         });
-
-        // }
-
-        // return this.http.post('/api/authenticate', JSON.stringify({ username: username, password: password }))
-        //     .map((response: Response) => {
-                // login successful if there's a jwt token in the response
-                // let user = response.json();
-                // if (user && user.token) {
-                //     store user details and jwt token in local storage to keep user logged in between page refreshes
-                    // localStorage.setItem('currentUser', JSON.stringify(user));
-                // }
-            // });
-        // return Observable.create(observer => {
-        //     localStorage.setItem('currentUser', username);
-        //     observer.next();
-        //     observer.complete();
-        // });
-        // localStorage.setItem('currentUser', username)
+        return observable;
     }
+    
+    register(nickname: string, password: string){
+        this.socket.emit('register new user', nickname, password);
+        let observable = new Observable(observer => {
+            this.socket.on('registration ok', (data) => {
+                observer.next(data);
+            });
+        });
+        return observable;
+    }
+
+    sendMessage(message){
+        this.socket.emit('add-message', message);
+    }
+
+    getMessages() {
+        let observable = new Observable(observer => {
+            this.socket.on('message', (data) => {
+                observer.next(data);
+            });
+            return () => {
+                this.socket.disconnect();
+            };
+        });
+        return observable;
+    }
+
 
     logout() {
         // remove user from local storage to log user out

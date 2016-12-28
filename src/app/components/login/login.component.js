@@ -7,10 +7,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var core_1 = require('@angular/core');
 var LoginComponent = (function () {
-    function LoginComponent(route, router, authenticationService, alertService) {
+    function LoginComponent(route, router, authService, alertService) {
         this.route = route;
         this.router = router;
-        this.authenticationService = authenticationService;
+        this.authService = authService;
         this.alertService = alertService;
         this.model = {};
         // model:IUser;
@@ -18,16 +18,33 @@ var LoginComponent = (function () {
     }
     LoginComponent.prototype.ngOnInit = function () {
         // reset login status
-        this.authenticationService.logout();
+        this.authService.logout();
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     };
     LoginComponent.prototype.login = function () {
         var _this = this;
         this.loading = true;
-        this.authenticationService.login(this.model.nickname, this.model.password)
+        this.authService.login(this.model.nickname, this.model.password)
             .subscribe(function (data) {
-            _this.router.navigate([_this.returnUrl]);
+            // console.log(data);
+            if (data.success === true && data.user.nickname === _this.model.nickname) {
+                _this.alertService.success('Auth successful', true);
+                localStorage.setItem('currentUser', JSON.stringify(data.user));
+                _this.router.navigate(['/']);
+                _this.loading = false;
+            }
+            else {
+                _this.alertService.error('Auth falied', true);
+                _this.router.navigate(['/login']);
+                _this.loading = false;
+            }
+            // if (data === this.model.nickname) {
+            //     this.alertService.success('Auth successful', true);
+            // this.router.navigate(['/login']);
+            // } else {
+            //
+            // }
         }, function (error) {
             _this.alertService.error(error);
             _this.loading = false;
