@@ -1,36 +1,32 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { AlertService, UserService } from '../../_services/index';
 
 @Component({
-    selector: 'register',
-    templateUrl: './register.component.html',
-    styleUrls: ['./register.component.less']
+    templateUrl: './register.component.html'
 })
 
 export class RegisterComponent {
-    username:string;
-    password:string;
-    password2:string;
-    message:string;
+    model: any = {};
+    loading = false;
 
-    alertMessage() {
-    }
+    constructor(
+        private router: Router,
+        private userService: UserService,
+        private alertService: AlertService) { }
 
-    guideMessage(stage) {
-        switch (stage) {
-            case 1:
-                this.message = 'Да, с имени и нужно начинать';
-                break;
-            case 2:
-                this.message = 'Молодец, теперь пароль';
-                break;
-            case 3:
-                if (this.password === this.password2) {
-                    this.message = 'Красава, пароли совпали, жми "Регистрироваться"!';
-                } else {
-                    this.message = 'Давай, ещё разок пароль вводи...';
-                }
-                break;
-        }
-
+    register() {
+        this.loading = true;
+        this.userService.create(this.model)
+            .subscribe(
+                data => {
+                    this.alertService.success('Registration successful', true);
+                    this.router.navigate(['/login']);
+                },
+                error => {
+                    this.alertService.error(error);
+                    this.loading = false;
+                });
     }
 }

@@ -1,0 +1,98 @@
+* {
+  box-sizing: border-box;
+}
+
+h1 {
+  font-family: Arial, sans-serif;
+  color: #78a5cc;
+}
+h2 {
+  font-family: Verdana, Arial, sans-serif;
+  color: #6734cc;
+  font-weight: normal;
+  font-size: 22px;
+}
+
+.left {
+  width: 20%;
+  background: #ededed;
+  height: 100%;
+  float: left;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px;
+  font-family: Verdana, Geneva, sans-serif;
+
+  .themes {
+    margin: 15px -10px;
+    padding: 0;
+
+    li {
+      padding: 10px 15px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 13px;
+
+      &:nth-child(2n) {
+        background: #f4f4f4;
+      }
+      &.active, &:hover {
+        background: #42186b;
+        color: #fff;
+      }
+    }
+  }
+}
+.right {
+  width: 80%;
+  float: left;
+  background: #cbffda;
+  position: absolute;
+  left: 20%;
+  top: 0;
+  padding: 10px 10px 50px 10px;
+  height: 100%;
+
+  .messages {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    right: 0;
+    bottom: 50px;
+    background: #fff;
+    border-top: 1px solid #d9d9d9;
+    overflow-x: hidden;
+
+    .message {
+      padding: 5px 10px;
+      border-bottom: 1px solid #d9d9d9;
+      color: #393939;
+
+      .name {
+        font-weight: bold;
+        font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+        color: #000;
+        font-size: 14px;
+      }
+      .text {
+        padding-left: 10px;
+      }
+    }
+  }
+
+  .controls {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    background: #ccc;
+    padding: 10px;
+
+    input[type='text'] {
+      width: 100%;
+      height: 30px;
+    }
+  }
+}

@@ -7,33 +7,28 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var core_1 = require('@angular/core');
 var RegisterComponent = (function () {
-    function RegisterComponent() {
+    function RegisterComponent(router, userService, alertService) {
+        this.router = router;
+        this.userService = userService;
+        this.alertService = alertService;
+        this.model = {};
+        this.loading = false;
     }
-    RegisterComponent.prototype.alertMessage = function () {
-    };
-    RegisterComponent.prototype.guideMessage = function (stage) {
-        switch (stage) {
-            case 1:
-                this.message = 'Да, с имени и нужно начинать';
-                break;
-            case 2:
-                this.message = 'Молодец, теперь пароль';
-                break;
-            case 3:
-                if (this.password === this.password2) {
-                    this.message = 'Красава, пароли совпали, жми "Регистрироваться"!';
-                }
-                else {
-                    this.message = 'Давай, ещё разок пароль вводи...';
-                }
-                break;
-        }
+    RegisterComponent.prototype.register = function () {
+        var _this = this;
+        this.loading = true;
+        this.userService.create(this.model)
+            .subscribe(function (data) {
+            _this.alertService.success('Registration successful', true);
+            _this.router.navigate(['/login']);
+        }, function (error) {
+            _this.alertService.error(error);
+            _this.loading = false;
+        });
     };
     RegisterComponent = __decorate([
         core_1.Component({
-            selector: 'register',
-            templateUrl: './register.component.html',
-            styleUrls: ['./register.component.less']
+            templateUrl: './register.component.html'
         })
     ], RegisterComponent);
     return RegisterComponent;

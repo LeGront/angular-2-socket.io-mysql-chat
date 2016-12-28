@@ -7,13 +7,35 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var core_1 = require('@angular/core');
 var LoginComponent = (function () {
-    function LoginComponent() {
+    function LoginComponent(route, router, authenticationService, alertService) {
+        this.route = route;
+        this.router = router;
+        this.authenticationService = authenticationService;
+        this.alertService = alertService;
+        this.model = {};
+        // model:IUser;
+        this.loading = false;
     }
+    LoginComponent.prototype.ngOnInit = function () {
+        // reset login status
+        this.authenticationService.logout();
+        // get return url from route parameters or default to '/'
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    };
+    LoginComponent.prototype.login = function () {
+        var _this = this;
+        this.loading = true;
+        this.authenticationService.login(this.model.nickname, this.model.password)
+            .subscribe(function (data) {
+            _this.router.navigate([_this.returnUrl]);
+        }, function (error) {
+            _this.alertService.error(error);
+            _this.loading = false;
+        });
+    };
     LoginComponent = __decorate([
         core_1.Component({
-            selector: 'login',
-            templateUrl: './login.component.html',
-            styleUrls: ['./login.component.less']
+            templateUrl: './login.component.html'
         })
     ], LoginComponent);
     return LoginComponent;

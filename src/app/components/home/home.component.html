@@ -1,0 +1,38 @@
+<div *ngIf="!nickname || nickname === ''">
+    Введите свое имя <input type="text" #nicknameForm (keyup.enter)="setNickname(nicknameForm.value)">
+</div>
+
+<div *ngIf="nickname && !nickname !== ''">
+    <div class="left">
+        <h2>Привет, {{nickname}}</h2>
+        Выбери интересующую тебя тематику:
+
+        <ul class="themes">
+            <li *ngFor="let room of rooms" (click)="setCurrentRoom(room)" [class.active]="room === currentRoom">{{room.name}}</li>
+        </ul>
+
+        Пользователи в чате:
+
+        <ul class="themes">
+            <li *ngFor="let user of chatUsers">{{user.nickname}}</li>
+        </ul>
+    </div>
+    <div class="right">
+        <h1>
+            {{title}}
+        </h1>
+
+        <div *ngIf="currentRoom">
+            <div class="messages">
+                <div class="message" *ngFor="let message of messages">
+                    <span class="name">{{message.nickname}}:</span>
+                    <span class="text">{{message.message}}</span>
+                </div>
+            </div>
+
+            <div class="controls">
+                <input type="text" [(ngModel)]="message" (keyup.enter)="sendMessage()">
+            </div>
+        </div>
+    </div>
+</div>
